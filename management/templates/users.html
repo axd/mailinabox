@@ -26,7 +26,7 @@
     <label class="sr-only" for="adduserQuota">Quota (MB)</label>
     <input type="text" class="form-control" id="adduserQuota" placeholder="Quota (MB)">
   </div>
-  <div class="form-group"
+  <div class="form-group">
     <select class="form-control" id="adduserPrivs">
       <option value="">Normal User</option>
       <option value="admin">Administrator</option>
@@ -258,7 +258,7 @@ function users_set_quota(elem) {
 
   show_modal_confirm(
     "User Quota",
-    $("<p>Set a new quota for <b>"  email  "</b>?</p> <p><label for='quota_value' style='display: block; font-weight: normal'>New Quota (MB):</label><input type='text' id='quota_value'></p><p><small>Quota must be positive integer. Enter 0 or blank for no quota.</small></p>"),
+    $("<p>Set a new quota for <b>" + email + "</b>?</p> <p><label for='quota_value' style='display: block; font-weight: normal'>New Quota (MB):</label><input type='text' id='quota_value'></p><p><small>Quota must be positive integer. Enter 0 or blank for no quota.</small></p>"),
     "Set Quota",
     function() {
       api(
