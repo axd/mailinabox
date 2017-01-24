@@ -8,7 +8,7 @@ from functools import wraps
 from flask import Flask, request, render_template, abort, Response, send_from_directory, make_response
 
 import auth, utils, multiprocessing.pool
-from mailconfig import get_mail_users, get_mail_users_ex, get_admins, add_mail_user, set_mail_password, remove_mail_user
+from mailconfig import get_mail_users, get_mail_users_ex, get_admins, add_mail_user, set_mail_password, remove_mail_user, set_mail_quota
 from mailconfig import get_mail_user_privileges, add_remove_mail_user_privilege
 from mailconfig import get_mail_aliases, get_mail_aliases_ex, get_mail_domains, add_mail_alias, remove_mail_alias
 
@@ -156,7 +156,11 @@ def mail_users():
 @authorized_personnel_only
 def mail_users_add():
 	try:
-		return add_mail_user(request.form.get('email', ''), request.form.get('password', ''), request.form.get('privileges', ''), env)
+		return add_mail_user(
+			request.form.get('email', ''),
+			request.form.get('password', ''),
+			request.form.get('privileges', ''),
+			request.form.get('quota', ''), env)
 	except ValueError as e:
 		return (str(e), 400)
 
@@ -168,11 +172,18 @@ def mail_users_password():
 	except ValueError as e:
 		return (str(e), 400)
 
+@app.route('/mail/users/quota', methods=['POST'])
+@authorized_personnel_only
+def mail_users_quota():
+	try:
+		return set_mail_quota(request.form.get('email', ''), request.form.get('quota', ''), env)
+	except ValueError as e:
+		return (str(e), 400)
+
 @app.route('/mail/users/remove', methods=['POST'])
 @authorized_personnel_only
 def mail_users_remove():
 	return remove_mail_user(request.form.get('email', ''), env)
-
 
 @app.route('/mail/users/privileges')
 @authorized_personnel_only
@@ -336,7 +347,7 @@ def ssl_get_status():
 
 	# What domains can we provision certificates for? What unexpected problems do we have?
 	provision, cant_provision = get_certificates_to_provision(env, show_extended_problems=False)
-	
+
 	# What's the current status of TLS certificates on all of the domain?
 	domains_status = get_web_domains_info(env)
 	domains_status = [{ "domain": d["domain"], "status": d["ssl_certificate"][0], "text": d["ssl_certificate"][1] } for d in domains_status ]
