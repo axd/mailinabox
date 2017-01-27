@@ -27,7 +27,7 @@ define('IMAP_FROM_SQL_DSN', 'sqlite:STORAGE_ROOT/mail/roundcube/roundcube.sqlite
 define('IMAP_FROM_SQL_USER', '');
 define('IMAP_FROM_SQL_PASSWORD', '');
 define('IMAP_FROM_SQL_OPTIONS', serialize(array(PDO::ATTR_PERSISTENT => true)));
-define('IMAP_FROM_SQL_QUERY', "SELECT name, email FROM identities i INNER JOIN users u ON i.user_id = u.user_id WHERE u.username = '#username' AND i.standard = 1 AND i.del = 0 AND i.name <> ''");
+define('IMAP_FROM_SQL_QUERY', "SELECT name, email FROM identities i INNER JOIN users u ON i.user_id = u.user_id WHERE u.username = '#username' AND i.standard = 1 AND i.del = 0");
 define('IMAP_FROM_SQL_FIELDS', serialize(array('name', 'email')));
 define('IMAP_FROM_SQL_FROM', '#name <#email>');
 define('IMAP_FROM_SQL_FULLNAME', '#name');
