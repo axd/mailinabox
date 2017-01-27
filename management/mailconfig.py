@@ -298,7 +298,7 @@ def add_mail_user(email, pw, privs, quota, env):
 
 	# get the database
 	conn, c = open_database(env, with_connection=True)
-	conn_oc, c_oc = open_database(env, with_connection=True, '/owncloud/owncloud.db')
+	conn_oc, c_oc = open_database(env, with_connection=True, "/owncloud/owncloud.db")
 
 	# hash the password
 	pw = hash_password(pw)
